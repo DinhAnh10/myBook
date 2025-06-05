@@ -1,0 +1,87 @@
+﻿@model myBook.Models.Chuong
+@{
+    ViewData["Title"] = Model.TenChuong;
+    var sach = Model.Sach;
+}
+
+<style>
+    .chapter-nav-btn {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        font-size: 2rem;
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        line-height: 48px;
+        border-radius: 50%;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+        .chapter-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+
+    .chapter-nav-prev {
+        left: 16px;
+    }
+
+    .chapter-nav-next {
+        right: 16px;
+    }
+</style>
+
+
+
+
+
+
+
+<div class="container-fluid bg-dark text-white p-4" style="min-height: 100vh;">
+    <div class="row">
+        <!-- Sidebar bên trái -->
+        <div class="col-md-3 border-end">
+            <img src="@Url.Content("~/" + (sach?.Anhs?.FirstOrDefault()?.Url ?? "images/no-image.png"))"
+                 class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;" />
+            <h4>@sach?.TenSach</h4>
+            <p class="text-muted">@sach?.TacGia?.TenTG</p>
+            <p>@(sach?.MoTa.Length > 200 ? sach.MoTa.Substring(0, 200) + "..." : sach?.MoTa)</p>
+
+            <a asp-action="DanhSachChuong" asp-route-sachId="@sach?.MaSach" class="btn btn-success w-100 mb-2">← Trở lại danh sách</a>
+        </div>
+
+        <!-- Nội dung chương -->
+        <div class="col-md-9">
+            <h2 class="text-center">@Model.TenChuong</h2>
+            <div class="mt-4" style="line-height: 1.8; font-size: 1.1rem; text-align: justify;">
+                @Html.Raw(Model.NoiDung.Replace("\n", "<br/>"))
+            </div>
+
+            <div class="d-flex justify-content-between mt-5">
+                <!-- Nút điều hướng chương nổi -->
+                @if (ViewBag.ChuongTruoc != null)
+                {
+                    <a asp-action="Chuong" asp-route-id="@ViewBag.ChuongTruoc.MaChuong"
+                       class="chapter-nav-btn chapter-nav-prev">
+                        &lt;
+                    </a>
+                }
+                @if (ViewBag.ChuongSau != null)
+                {
+                    <a asp-action="Chuong" asp-route-id="@ViewBag.ChuongSau.MaChuong"
+                       class="chapter-nav-btn chapter-nav-next">
+                        &gt;
+                    </a>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>

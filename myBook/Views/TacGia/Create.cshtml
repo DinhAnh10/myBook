@@ -1,0 +1,21 @@
+﻿@model myBook.Models.TacGia
+@{
+    ViewData["Title"] = "Thêm tác giả";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post" asp-antiforgery="true">
+    <div class="form-group">
+        <label asp-for="TenTG" class="control-label"></label>
+        <input asp-for="TenTG" class="form-control" />
+        <span asp-validation-for="TenTG" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Thêm</button>
+</form>
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<a asp-action="Index">Quay lại danh sách</a>

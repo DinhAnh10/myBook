@@ -1,0 +1,114 @@
+﻿@model IEnumerable<myBook.Models.Chuong>
+
+
+
+
+
+@{
+    ViewData["Title"] = "Cập nhật chương - " + ((myBook.Models.Sach)ViewBag.Sach)?.TenSach;
+    var sach = (myBook.Models.Sach)ViewBag.Sach;
+}
+
+
+
+
+
+<h2>@ViewData["Title"]</h2>
+
+<a asp-action="Index" class="btn btn-secondary mb-3">Quay lại danh sách sách</a>
+
+<h4>Thêm chương mới</h4>
+<form asp-action="AddChuong" method="post" class="mb-4">
+    <input type="hidden" name="MaSach" value="@sach.MaSach" />
+    <div class="mb-3">
+        <label for="TenChuong" class="form-label">Tên chương</label>
+        <input type="text" class="form-control" name="TenChuong" required />
+    </div>
+    @* <div class="mb-3"> *@
+    @*     <label for="SoThuTu" class="form-label">Số thứ tự</label> *@
+    @*     <input type="number" class="form-control" name="SoThuTu" required /> *@
+    @* </div> *@
+    <div class="mb-3">
+        <label for="NoiDung" class="form-label">Nội dung</label>
+        <textarea class="form-control" name="NoiDung" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm chương</button>
+</form>
+
+<hr />
+
+<h4 class="mt-4 mb-3">📚 Danh sách chương</h4>
+
+<table class="table table-hover align-middle shadow-sm rounded overflow-hidden">
+    <thead class="table-dark">
+        <tr>
+            <th style="width: 5%;">#</th>
+            <th style="width: 25%;">Tên chương</th>
+            <th>Nội dung</th>
+            <th style="width: 15%;">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var chuong in Model)
+        {
+            <tr id="display-row-@chuong.MaChuong">
+                <td>@chuong.SoThuTu</td>
+                <td>@chuong.TenChuong</td>
+                <td>
+                    <div style="max-height: 80px; overflow: hidden; text-overflow: ellipsis;">
+                        @chuong.NoiDung.Substring(0, Math.Min(100, chuong.NoiDung.Length))...
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <button type="button" class="btn btn-sm btn-outline-warning" title="Sửa" onclick="showEditForm('@chuong.MaChuong')">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <form asp-action="DeleteChuong" asp-route-id="@chuong.MaChuong" method="post" class="d-inline"
+                              onsubmit="return confirm('Bạn có chắc muốn xoá chương này?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Xoá">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Form sửa inline ẩn -->
+            <tr id="edit-row-@chuong.MaChuong" style="display:none;" class="bg-light-subtle">
+                <form asp-action="EditChuong" method="post">
+                <td>
+                    <input type="hidden" name="MaChuong" value="@chuong.MaChuong" />
+                    <input type="hidden" name="MaSach" value="@chuong.MaSach" />
+                    <input type="number" name="SoThuTu" class="form-control" value="@chuong.SoThuTu" required />
+                </td>
+                <td>
+                    <input type="text" name="TenChuong" class="form-control" value="@chuong.TenChuong" required />
+                </td>
+                <td colspan="2">
+                    <textarea name="NoiDung" class="form-control mb-2" rows="4" required>@chuong.NoiDung</textarea>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-sm btn-success">💾 Lưu</button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="hideEditForm('@chuong.MaChuong')">❌ Hủy</button>
+                    </div>
+                </td>
+                </form>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    <script>
+        function showEditForm(id) {
+            document.getElementById('display-row-' + id).style.display = 'none';
+            document.getElementById('edit-row-' + id).style.display = '';
+        }
+
+        function hideEditForm(id) {
+            document.getElementById('edit-row-' + id).style.display = 'none';
+            document.getElementById('display-row-' + id).style.display = '';
+        }
+    </script>
+}

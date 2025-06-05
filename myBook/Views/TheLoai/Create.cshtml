@@ -1,0 +1,22 @@
+﻿@model myBook.Models.TheLoai
+
+@{
+    ViewData["Title"] = "Thêm thể loại";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create">
+    <div class="mb-3">
+        <label asp-for="TenTheLoai" class="form-label"></label>
+        <input asp-for="TenTheLoai" class="form-control" />
+        <span asp-validation-for="TenTheLoai" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="MoTa" class="form-label"></label>
+        <textarea asp-for="MoTa" class="form-control"></textarea>
+        <span asp-validation-for="MoTa" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

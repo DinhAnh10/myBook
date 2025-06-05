@@ -1,0 +1,64 @@
+﻿@model IEnumerable<myBook.Models.Sach>
+
+@{
+    ViewData["Title"] = "Bán sách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int numOfquanity = 1;
+}
+<link rel="stylesheet" href="~/css/site.css" />
+
+<!-- Carousel Section -->
+<div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active" style="height: 410px;">
+            <img class="img-fluid w-100" src="~/images/anh-sach-nen.jpg" alt="Sách mới">
+            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                <div class="p-3" style="max-width: 700px;">
+                    <h4 class="text-light text-uppercase font-weight-medium mb-3">Chào mừng đến với cửa hàng sách</h4>
+                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Khám phá kho tàng tri thức</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="carousel-control-prev" href="#header-carousel" data-bs-slide="prev">
+        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+            <span class="carousel-control-prev-icon mb-n2"></span>
+        </div>
+    </a>
+    <a class="carousel-control-next" href="#header-carousel" data-bs-slide="next">
+        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+            <span class="carousel-control-next-icon mb-n2"></span>
+        </div>
+    </a>
+</div>
+
+<!-- Title Section -->
+<div class="text-center mb-4">
+    <h2 class="section-title px-5"><span class="px-2">Mới Nhất</span></h2>
+</div>
+
+<!-- Product Grid -->
+<div class="product-scroll-container px-xl-5 pb-3">
+    <div class="product-scroll-inner d-flex flex-nowrap">
+        @foreach (var item in Model)
+        {
+            <div class="product-card me-3">
+                <div class="card product-item border-0 shadow-sm position-relative" style="width: 180px; background: #19181f;">
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.MaSach" class="stretched-link"></a>
+                    <div class="position-relative">
+                        <img class="img-fluid w-100 rounded" src="@(item?.Anhs?.FirstOrDefault()?.Url ?? "/images/no-image.png")" alt="@item.TenSach" style="aspect-ratio: 3/4; object-fit: cover;">
+                        <span class="badge bg-success text-white position-absolute top-0 start-0 m-2 px-2 py-1" style="font-size: 0.85rem; border-radius: 6px 0 8px 0;">
+                            MIỄN PHÍ
+                        </span>
+                    </div>
+                    <div class="card-body p-2 text-center">
+                        <div class="text-white" style="font-size: 0.95rem; white-space: normal;">
+                             @item.TenSach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<myBook.Models.TheLoai>
+
+@{
+    ViewData["Title"] = "Thể loại sách";
+}
+
+<h2>Thể loại sách</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Thêm thể loại mới</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Tên thể loại</th>
+            <th>Mô tả</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TenTheLoai</td>
+                <td>@item.MoTa</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.MaTheLoai">Sửa</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.MaTheLoai">Xoá</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script>
+        $(function () {
+        @if (TempData["success"] != null)
+        {
+            <text>toastr.success("@TempData["success"]");</text>
+        }
+        @if (TempData["error"] != null)
+        {
+            <text>toastr.error("@TempData["error"]");</text>
+        }
+        });
+    </script>
+}

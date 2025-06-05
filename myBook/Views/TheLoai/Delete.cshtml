@@ -1,0 +1,28 @@
+﻿@model myBook.Models.TheLoai
+
+@{
+    ViewData["Title"] = "Xóa thể loại";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-warning">
+    <strong>Bạn có chắc muốn xóa thể loại này?</strong>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Mã thể loại</dt>
+    <dd class="col-sm-9">@Model.MaTheLoai</dd>
+
+    <dt class="col-sm-3">Tên thể loại</dt>
+    <dd class="col-sm-9">@Model.TenTheLoai</dd>
+
+    <dt class="col-sm-3">Mô tả</dt>
+    <dd class="col-sm-9">@Model.MoTa</dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="MaTheLoai" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

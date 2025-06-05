@@ -1,0 +1,56 @@
+﻿@model IEnumerable<myBook.Models.Sach>
+
+@{
+    ViewData["Title"] = "Danh sách sách";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a asp-action="Add" class="btn btn-success mb-3">Thêm sách mới</a>
+
+<table class="table table-bordered table-hover align-middle text-center">
+    <thead class="table-light">
+        <tr>
+            <th>Tên sách</th>
+            <th>Giá bán</th>
+            <th>Thể loại</th>
+            <th>Tác giả</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TenSach</td>
+                <td>@item.GiaBan.ToString("N0") đ</td>
+                <td>@item.TheLoai?.TenTheLoai</td>
+                <td>@item.TacGia?.TenTG</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MaSach" class="btn btn-sm btn-warning me-1">Sửa</a>
+                    <form asp-action="Delete" asp-route-id="@item.MaSach" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sách này không?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Xoá</button>
+                    </form>
+                    <a asp-action="UpdateChuong" asp-route-id="@item.MaSach" class="btn btn-sm btn-info">
+                        Cập nhật chương
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(function () {
+        @if (TempData["success"] != null)
+        {
+            <text>toastr.success("@TempData["success"]");</text>
+        }
+        @if (TempData["error"] != null)
+        {
+            <text>toastr.error("@TempData["error"]");</text>
+        }
+        });
+    </script>
+}

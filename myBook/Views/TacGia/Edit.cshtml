@@ -1,0 +1,18 @@
+﻿@model myBook.Models.TacGia
+@{
+    ViewData["Title"] = "Chỉnh sửa tác giả";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="MaTG" />
+    <div class="form-group">
+        <label asp-for="TenTG" class="control-label"></label>
+        <input asp-for="TenTG" class="form-control" />
+        <span asp-validation-for="TenTG" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>
+
+<a asp-action="Index">Quay lại danh sách</a>

@@ -1,0 +1,94 @@
+﻿@model myBook.Models.Sach
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Thêm sách mới";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<partial name="_ValidationScriptsPartial" />
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form asp-action="Add" method="post" enctype="multipart/form-data" class="p-4 bg-white rounded shadow-sm">
+
+    <div class="mb-3">
+        <label asp-for="TenSach" class="form-label fw-semibold">Tên sách</label>
+        <input asp-for="TenSach" class="form-control" placeholder="Nhập tên sách..." />
+        <span asp-validation-for="TenSach" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GiaBan" class="form-label fw-semibold">Giá bán</label>
+        <input asp-for="GiaBan" class="form-control" placeholder="Nhập giá bán..." />
+        <span asp-validation-for="GiaBan" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MoTa" class="form-label fw-semibold">Mô tả</label>
+        <textarea asp-for="MoTa" class="form-control" rows="3" placeholder="Mô tả ngắn về sách..."></textarea>
+        <span asp-validation-for="MoTa" class="text-danger"></span>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <label asp-for="MaTheLoai" class="form-label fw-semibold">Thể loại</label>
+            <select asp-for="MaTheLoai" asp-items="ViewBag.Categories" class="form-select">
+                <option value="">-- Chọn thể loại --</option>
+            </select>
+            <span asp-validation-for="MaTheLoai" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="MaTG" class="form-label fw-semibold">Tác giả</label>
+            <select asp-for="MaTG" asp-items="ViewBag.MaTG" class="form-select">
+                <option value="">-- Chọn tác giả --</option>
+            </select>
+            <span asp-validation-for="MaTG" class="text-danger"></span>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Danh sách chương</h4>
+    <div id="chuong-container" class="mb-3">
+        <!-- Các chương sẽ được render tại đây -->
+    </div>
+    <button type="button" class="btn btn-outline-primary mb-4" onclick="addChuong()">
+        <i class="bi bi-plus-circle me-1"></i> Thêm chương
+    </button>
+
+    <div class="mb-4">
+        <label for="Images" class="form-label fw-semibold">Ảnh sách</label>
+        <input type="file" name="Images" id="Images" class="form-control" multiple accept="image/*" />
+    </div>
+
+    <button type="submit" class="btn btn-success px-5 py-2 fw-semibold">Thêm sách</button>
+</form>
+
+@section Scripts {
+    <script>
+        let index = 0;
+        function addChuong() {
+            const container = document.getElementById('chuong-container');
+            const html = `
+            <div class="border rounded p-3 mb-3 shadow-sm bg-light">
+                <div class="mb-3">
+                    <label for="Chuongs[${index}].TenChuong" class="form-label fw-semibold">Tên chương</label>
+                    <input name="Chuongs[${index}].TenChuong" class="form-control" placeholder="Tên chương..." />
+                </div>
+                <div class="mb-3">
+                    <label for="Chuongs[${index}].SoThuTu" class="form-label fw-semibold">Số thứ tự</label>
+                    <input type="number" name="Chuongs[${index}].SoThuTu" class="form-control" placeholder="Số thứ tự..." min="1" />
+                </div>
+                <div class="mb-3">
+                    <label for="Chuongs[${index}].NoiDung" class="form-label fw-semibold">Nội dung</label>
+                    <textarea name="Chuongs[${index}].NoiDung" class="form-control" rows="4" placeholder="Nội dung chương..."></textarea>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">
+                    <i class="bi bi-trash3"></i> Xoá chương
+                </button>
+            </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+            index++;
+        }
+    </script>
+}

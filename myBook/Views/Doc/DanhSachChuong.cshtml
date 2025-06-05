@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<myBook.Models.Chuong>
+@{
+    ViewData["Title"] = "Danh sách chương";
+    var sach = ViewBag.Sach as myBook.Models.Sach;
+}
+
+<h2>Danh sách chương - @sach?.TenSach</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên chương</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var chuong in Model)
+        {
+            <tr>
+                <td>@chuong.SoThuTu</td>
+                <td>@chuong.TenChuong</td>
+                <td>
+                    <a asp-controller="Doc" asp-action="Chuong" asp-route-id="@chuong.MaChuong" class="btn btn-sm btn-primary">
+                        Đọc
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Sach" asp-action="Details" asp-route-id="@sach?.MaSach" class="btn btn-secondary">← Quay lại sách</a>
