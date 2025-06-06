@@ -1,21 +1,43 @@
 ﻿@model IEnumerable<myBook.Models.Sach>
 
 @{
-    ViewData["Title"] = "Bán sách";
+    ViewData["Title"] = "Web sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int numOfquanity = 1;
 }
+
+
+<style>
+    body {
+        background-color: #121212;
+        color: #eee;
+    }
+    /* Chỉnh các thành phần đặc biệt */
+    .product-card .card.product-item {
+        background: #19181f !important;
+    }
+
+    .text-center h2.section-title span {
+        color: #00eaff; /* Màu nổi bật giống trang đọc */
+    }
+</style>
 <link rel="stylesheet" href="~/css/site.css" />
 
 <!-- Carousel Section -->
 <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active" style="height: 410px;">
-            <img class="img-fluid w-100" src="~/images/anh-sach-nen.jpg" alt="Sách mới">
+        <div class="carousel-item active" style="height: 460px;">
+            <img class="img-fluid w-100" src="~/images/Hinh-anh-B.jpg" alt="Sách mới">
             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                 <div class="p-3" style="max-width: 700px;">
-                    <h4 class="text-light text-uppercase font-weight-medium mb-3">Chào mừng đến với cửa hàng sách</h4>
-                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Khám phá kho tàng tri thức</h3>
+                    <h4 class="mb-3" style="color: #4CAF50; text-transform: uppercase; font-weight: 500;">
+                        Chào mừng đến với cửa hàng sách
+                    </h4>
+                    <h3 class="mb-4" style="color: #2f5933; font-weight: 600;">
+                        Khám phá kho tàng tri thức
+                    </h3>
+
+
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ namespace myBook.Models
         public int MaChuong { get; set; }
         public string TenChuong { get; set; }
         public int SoThuTu { get; set; }
+        [Column(TypeName = "ntext")]
         public string NoiDung { get; set; }
         public string? MaSach { get; set; }
         [ForeignKey("MaSach")]

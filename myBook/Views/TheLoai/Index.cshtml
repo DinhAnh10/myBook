@@ -4,16 +4,18 @@
     ViewData["Title"] = "Thể loại sách";
 }
 
-<h2>Thể loại sách</h2>
+<h2 class="mb-4">@ViewData["Title"]</h2>
 
-<a class="btn btn-primary mb-3" asp-action="Create">Thêm thể loại mới</a>
+<a asp-action="Create" class="btn btn-success mb-3">
+    <i class="bi bi-plus-circle"></i> Thêm thể loại mới
+</a>
 
-<table class="table table-bordered table-striped">
-    <thead>
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
         <tr>
             <th>Tên thể loại</th>
             <th>Mô tả</th>
-            <th>Thao tác</th>
+            <th style="width: 150px;">Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -23,13 +25,17 @@
                 <td>@item.TenTheLoai</td>
                 <td>@item.MoTa</td>
                 <td>
-                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.MaTheLoai">Sửa</a>
-                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.MaTheLoai">Xoá</a>
+                    <a class="btn btn-sm btn-warning me-1" asp-action="Edit" asp-route-id="@item.MaTheLoai">Sửa</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.MaTheLoai"
+                       onclick="return confirm('Bạn có chắc chắn muốn xoá thể loại này không?');">
+                        Xoá
+                    </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 @section Scripts {
     <script>
         $(function () {

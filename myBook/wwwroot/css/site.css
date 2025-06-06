@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -26,7 +26,7 @@ body {
     overflow-y: hidden;
     white-space: nowrap;
     padding-bottom: 10px;
-    /* ?n thanh cu?n tr�n m?t s? tr�nh duy?t */
+    /* ?n thanh cu?n trên m?t s? trình duy?t */
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
@@ -45,3 +45,54 @@ body {
     width: 220px;
     min-width: 220px;
 }
+.chapter-nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    line-height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+    .chapter-nav-btn:hover {
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+
+.chapter-nav-prev {
+    left: 16px;
+}
+
+.chapter-nav-next {
+    right: 16px;
+}
+#spritz-container {
+    width: 100%;
+    height: 80px;
+    font-size: 28px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: sans-serif;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+    #spritz-container .pre,
+    #spritz-container .post {
+        color: white !important;
+    }
+
+    #spritz-container .orp {
+        color: #ffd700 !important; /* vàng */
+    }
+

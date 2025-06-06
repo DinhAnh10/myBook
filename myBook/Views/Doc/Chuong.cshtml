@@ -2,46 +2,66 @@
 @{
     ViewData["Title"] = Model.TenChuong;
     var sach = Model.Sach;
+    var noiDungWords = Model.NoiDung.Split(new[] { ' ', '\n', '\r' }, System.StringSplitOptions.RemoveEmptyEntries);
+    var noiDungJson = System.Text.Json.JsonSerializer.Serialize(noiDungWords);
 }
 
 <style>
-    .chapter-nav-btn {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 1000;
-        background-color: rgba(0, 0, 0, 0.6);
-        color: white;
-        border: none;
-        font-size: 2rem;
-        width: 48px;
-        height: 48px;
+    #spritz-container {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #00eaff !important;
         text-align: center;
-        line-height: 48px;
-        border-radius: 50%;
-        cursor: pointer;
-        text-decoration: none;
-        transition: background-color 0.3s;
+        margin-top: 10px;
     }
 
-        .chapter-nav-btn:hover {
-            background-color: rgba(0, 0, 0, 0.85);
+        #spritz-container .spritz-word {
+            position: relative;
+            width: 20ch; /* rộng hơn cho từ dài */
+            height: 1.5em;
+            margin: 0 auto;
+            font-family: monospace;
         }
 
-    .chapter-nav-prev {
-        left: 16px;
-    }
+        #spritz-container .pre,
+        #spritz-container .orp,
+        #spritz-container .post {
+            position: absolute;
+            top: 0;
+            white-space: pre;
+        }
 
-    .chapter-nav-next {
-        right: 16px;
+        #spritz-container .orp {
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff000 !important;
+            font-weight: 900;
+        }
+
+        #spritz-container .pre {
+            right: 50%;
+            text-align: right;
+            margin-right: 0.3ch;
+            opacity: 0.6;
+            font-weight: normal;
+        }
+
+        #spritz-container .post {
+            left: 50%;
+            text-align: left;
+            margin-left: 0.3ch;
+            opacity: 0.6;
+            font-weight: normal;
+        }
+
+    .highlighted-word {
+        background-color: yellow;
+        color: black;
     }
 </style>
 
 
-
-
-
-
+<link rel="stylesheet" href="~/css/site.css" />
 
 <div class="container-fluid bg-dark text-white p-4" style="min-height: 100vh;">
     <div class="row">
@@ -51,7 +71,22 @@
                  class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;" />
             <h4>@sach?.TenSach</h4>
             <p class="text-muted">@sach?.TacGia?.TenTG</p>
-            <p>@(sach?.MoTa.Length > 200 ? sach.MoTa.Substring(0, 200) + "..." : sach?.MoTa)</p>
+            <p>@(string.IsNullOrEmpty(sach?.MoTa) ? "" : (sach.MoTa.Length > 200 ? sach.MoTa.Substring(0, 200) + "..." : sach.MoTa))</p>
+
+            <button class="btn btn-primary w-100" onclick="toggleSpritz()">📖 Đọc Spritz</button>
+
+            <div class="mt-2 d-flex align-items-center gap-2">
+                <label class="form-label mb-0 me-2">Tốc độ:</label>
+                <button type="button" class="btn btn-secondary btn-sm" id="speed-decrease">-</button>
+                <span id="speed-label" style="width: 60px; text-align: center;">300</span> WPM
+                <button type="button" class="btn btn-secondary btn-sm" id="speed-increase">+</button>
+            </div>
+
+            <div id="spritz-container" class="mt-3 d-none">
+                <span class="spritz-word">
+                    <span class="pre"></span><span class="orp"></span><span class="post"></span>
+                </span>
+            </div>
 
             <a asp-action="DanhSachChuong" asp-route-sachId="@sach?.MaSach" class="btn btn-success w-100 mb-2">← Trở lại danh sách</a>
         </div>
@@ -59,29 +94,116 @@
         <!-- Nội dung chương -->
         <div class="col-md-9">
             <h2 class="text-center">@Model.TenChuong</h2>
-            <div class="mt-4" style="line-height: 1.8; font-size: 1.1rem; text-align: justify;">
-                @Html.Raw(Model.NoiDung.Replace("\n", "<br/>"))
+            <div id="noi-dung-chuong" class="mt-4"
+                 style="line-height: 1.8; font-size: 1.1rem; text-align: justify; max-height: 80vh; overflow-y: auto; padding-right: 10px;">
+                @for (int i = 0; i < noiDungWords.Length; i++)
+                {
+                    <span id="wd-@i">@noiDungWords[i]</span>
+                    @(" ")
+                }
             </div>
 
             <div class="d-flex justify-content-between mt-5">
-                <!-- Nút điều hướng chương nổi -->
                 @if (ViewBag.ChuongTruoc != null)
                 {
-                    <a asp-action="Chuong" asp-route-id="@ViewBag.ChuongTruoc.MaChuong"
-                       class="chapter-nav-btn chapter-nav-prev">
-                        &lt;
-                    </a>
+                    <a asp-action="Chuong" asp-route-id="@ViewBag.ChuongTruoc.MaChuong" class="chapter-nav-btn chapter-nav-prev">&lt;</a>
                 }
                 @if (ViewBag.ChuongSau != null)
                 {
-                    <a asp-action="Chuong" asp-route-id="@ViewBag.ChuongSau.MaChuong"
-                       class="chapter-nav-btn chapter-nav-next">
-                        &gt;
-                    </a>
+                    <a asp-action="Chuong" asp-route-id="@ViewBag.ChuongSau.MaChuong" class="chapter-nav-btn chapter-nav-next">&gt;</a>
                 }
-
             </div>
-
         </div>
     </div>
 </div>
+
+<script>
+    const words = @Html.Raw(noiDungJson);
+    let spritzInterval;
+    let currentIndex = 0;
+    let isPlaying = false;
+    let speed = 200;
+
+    function getORPIndex(word) {
+        if (word.length <= 1) return 0;
+        if (word.length <= 5) return 1;
+        if (word.length <= 9) return 2;
+        return 3;
+    }
+
+    function showWord(index) {
+        if (index >= words.length) {
+            clearInterval(spritzInterval);
+            isPlaying = false;
+            currentIndex = 0;
+            document.getElementById("spritz-container").classList.add("d-none");
+            document.querySelectorAll("#noi-dung-chuong span").forEach(el => el.classList.remove("highlighted-word"));
+            return;
+        }
+
+        const word = words[index];
+        const orpIndex = getORPIndex(word);
+        const pre = word.slice(0, orpIndex);
+        const orp = word[orpIndex] || '';
+        const post = word.slice(orpIndex + 1);
+
+        // Chèn vào các thẻ
+        document.querySelector("#spritz-container .pre").textContent = pre;
+        document.querySelector("#spritz-container .orp").textContent = orp;
+        document.querySelector("#spritz-container .post").textContent = post;
+
+        // Highlight từ đang đọc trong nội dung chính
+        document.querySelectorAll("#noi-dung-chuong span").forEach(el => el.classList.remove("highlighted-word"));
+        const highlight = document.getElementById(`wd-${index}`);
+        if (highlight) highlight.classList.add("highlighted-word");
+    }
+
+    function startSpritz() {
+        clearInterval(spritzInterval);
+        spritzInterval = setInterval(() => {
+            showWord(currentIndex++);
+        }, speed);
+    }
+
+    function toggleSpritz() {
+        const spritzContainer = document.getElementById("spritz-container");
+        if (!isPlaying) {
+            spritzContainer.classList.remove("d-none");
+            startSpritz();
+        } else {
+            clearInterval(spritzInterval);
+        }
+        isPlaying = !isPlaying;
+    }
+
+    function updateSpeedLabel() {
+        const wpm = Math.round(60000 / speed);
+        document.getElementById("speed-label").textContent = wpm;
+    }
+
+    // Giảm tốc độ
+    document.getElementById("speed-decrease").addEventListener("click", () => {
+        if (speed < 1000) {
+            speed += 10;
+            updateSpeedLabel();
+            if (isPlaying) {
+                clearInterval(spritzInterval);
+                startSpritz();
+            }
+        }
+    });
+
+    // Tăng tốc độ
+    document.getElementById("speed-increase").addEventListener("click", () => {
+        if (speed > 50) {
+            speed -= 10;
+            updateSpeedLabel();
+            if (isPlaying) {
+                clearInterval(spritzInterval);
+                startSpritz();
+            }
+        }
+    });
+
+    updateSpeedLabel();
+</script>
